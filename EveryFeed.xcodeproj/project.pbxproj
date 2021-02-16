@@ -11,6 +11,7 @@
 		AC449B7625DBEC93001A844D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B7525DBEC93001A844D /* ContentView.swift */; };
 		AC449B7825DBEC95001A844D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC449B7725DBEC95001A844D /* Assets.xcassets */; };
 		AC449B7B25DBEC95001A844D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC449B7A25DBEC95001A844D /* Preview Assets.xcassets */; };
+		AC449B8325DBECA4001A844D /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8225DBECA4001A844D /* FeedBack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		AC449B7725DBEC95001A844D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC449B7A25DBEC95001A844D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AC449B7C25DBEC95001A844D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC449B8225DBECA4001A844D /* FeedBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			children = (
 				AC449B7325DBEC93001A844D /* EveryFeedApp.swift */,
 				AC449B7525DBEC93001A844D /* ContentView.swift */,
+				AC449B8225DBECA4001A844D /* FeedBack.swift */,
 				AC449B7725DBEC95001A844D /* Assets.xcassets */,
 				AC449B7C25DBEC95001A844D /* Info.plist */,
 				AC449B7925DBEC95001A844D /* Preview Content */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC449B8325DBECA4001A844D /* FeedBack.swift in Sources */,
 				AC449B7625DBEC93001A844D /* ContentView.swift in Sources */,
 				AC449B7425DBEC93001A844D /* EveryFeedApp.swift in Sources */,
 			);
