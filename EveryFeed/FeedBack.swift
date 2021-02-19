@@ -21,8 +21,9 @@ struct FeedBack: View {
     @State var url = ""
     @State var canHelp = false
     @State var email = ""
-    @Environment(\.presentationMode) var presentationMode
     @State private var showAlert = false
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var data:DataManager
     
     var body: some View {
         Form {
@@ -60,11 +61,19 @@ struct FeedBack: View {
                 
             }
         }
-        .navigationTitle(appName)
+        .navigationBarTitle(Text(appName), displayMode: .inline)
         .navigationBarItems(
             trailing:
                 Button(action: {
-                    showAlert = true
+                    if pickerValue == 0 {
+                        if data.saveFeedBack(appName: appName, isBug: true, title: title, body: bodyText, rates: stepperValue, influences: toggleValue, url: nil, canHelp: nil, email: nil) {
+                            showAlert = true
+                        }
+                    } else {
+                        if data.saveFeedBack(appName: appName, isBug: false, title: sTitle, body: sBodyText, rates: nil, influences: nil, url: url, canHelp: canHelp, email: email) {
+                            showAlert = true
+                        }
+                    }
                 }) {
                     Text("Submit")
                 }
@@ -77,8 +86,16 @@ struct FeedBack: View {
                         })
                     )
                 }
+                .disabled({
+                    if pickerValue == 0 {
+                        return title == "" || bodyText == ""
+                    } else {
+                        return sTitle == "" || sBodyText == ""
+                    }
+                }())
         )
     }
+    
 }
 
 //struct FeedBack_Previews: PreviewProvider {

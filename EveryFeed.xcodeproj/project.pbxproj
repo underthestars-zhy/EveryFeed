@@ -12,9 +12,16 @@
 		AC449B7825DBEC95001A844D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC449B7725DBEC95001A844D /* Assets.xcassets */; };
 		AC449B7B25DBEC95001A844D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC449B7A25DBEC95001A844D /* Preview Assets.xcassets */; };
 		AC449B8325DBECA4001A844D /* FeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8225DBECA4001A844D /* FeedBack.swift */; };
+		AC449B8825DBEFBA001A844D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8725DBEFBA001A844D /* DataManager.swift */; };
+		AC449B8C25DC046B001A844D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8B25DC046B001A844D /* Message.swift */; };
+		AC449B8E25DC0478001A844D /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8D25DC0478001A844D /* MyApp.swift */; };
+		E083FAC220C2EC946CE4244F /* Pods_EveryFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9414804AFA0A99B13B810135 /* Pods_EveryFeed.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0805FC94828F849219A6404D /* Pods-EveryFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EveryFeed.release.xcconfig"; path = "Target Support Files/Pods-EveryFeed/Pods-EveryFeed.release.xcconfig"; sourceTree = "<group>"; };
+		8761E9D475A0FB12F4BDC4D6 /* Pods-EveryFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EveryFeed.debug.xcconfig"; path = "Target Support Files/Pods-EveryFeed/Pods-EveryFeed.debug.xcconfig"; sourceTree = "<group>"; };
+		9414804AFA0A99B13B810135 /* Pods_EveryFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EveryFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC449B7025DBEC93001A844D /* EveryFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EveryFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC449B7325DBEC93001A844D /* EveryFeedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveryFeedApp.swift; sourceTree = "<group>"; };
 		AC449B7525DBEC93001A844D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -22,6 +29,10 @@
 		AC449B7A25DBEC95001A844D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AC449B7C25DBEC95001A844D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC449B8225DBECA4001A844D /* FeedBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBack.swift; sourceTree = "<group>"; };
+		AC449B8425DBEF8C001A844D /* EveryFeed-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EveryFeed-Bridging-Header.h"; sourceTree = "<group>"; };
+		AC449B8725DBEFBA001A844D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		AC449B8B25DC046B001A844D /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		AC449B8D25DC0478001A844D /* MyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +40,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E083FAC220C2EC946CE4244F /* Pods_EveryFeed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		409CFEE84E533FB21F167D8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9414804AFA0A99B13B810135 /* Pods_EveryFeed.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		53484A355E52D5064EAD9962 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8761E9D475A0FB12F4BDC4D6 /* Pods-EveryFeed.debug.xcconfig */,
+				0805FC94828F849219A6404D /* Pods-EveryFeed.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		AC449B6725DBEC93001A844D = {
 			isa = PBXGroup;
 			children = (
 				AC449B7225DBEC93001A844D /* EveryFeed */,
 				AC449B7125DBEC93001A844D /* Products */,
+				53484A355E52D5064EAD9962 /* Pods */,
+				409CFEE84E533FB21F167D8A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,10 +87,14 @@
 			children = (
 				AC449B7325DBEC93001A844D /* EveryFeedApp.swift */,
 				AC449B7525DBEC93001A844D /* ContentView.swift */,
+				AC449B8D25DC0478001A844D /* MyApp.swift */,
+				AC449B8B25DC046B001A844D /* Message.swift */,
 				AC449B8225DBECA4001A844D /* FeedBack.swift */,
 				AC449B7725DBEC95001A844D /* Assets.xcassets */,
 				AC449B7C25DBEC95001A844D /* Info.plist */,
 				AC449B7925DBEC95001A844D /* Preview Content */,
+				AC449B8425DBEF8C001A844D /* EveryFeed-Bridging-Header.h */,
+				AC449B8725DBEFBA001A844D /* DataManager.swift */,
 			);
 			path = EveryFeed;
 			sourceTree = "<group>";
@@ -79,6 +114,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AC449B7F25DBEC95001A844D /* Build configuration list for PBXNativeTarget "EveryFeed" */;
 			buildPhases = (
+				B67A6D95A0E9C9F8FA8A44EC /* [CP] Check Pods Manifest.lock */,
 				AC449B6C25DBEC93001A844D /* Sources */,
 				AC449B6D25DBEC93001A844D /* Frameworks */,
 				AC449B6E25DBEC93001A844D /* Resources */,
@@ -103,6 +139,7 @@
 				TargetAttributes = {
 					AC449B6F25DBEC93001A844D = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -136,14 +173,42 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B67A6D95A0E9C9F8FA8A44EC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EveryFeed-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AC449B6C25DBEC93001A844D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				AC449B8325DBECA4001A844D /* FeedBack.swift in Sources */,
+				AC449B8825DBEFBA001A844D /* DataManager.swift in Sources */,
+				AC449B8C25DC046B001A844D /* Message.swift in Sources */,
 				AC449B7625DBEC93001A844D /* ContentView.swift in Sources */,
 				AC449B7425DBEC93001A844D /* EveryFeedApp.swift in Sources */,
+				AC449B8E25DC0478001A844D /* MyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,9 +333,11 @@
 		};
 		AC449B8025DBEC95001A844D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8761E9D475A0FB12F4BDC4D6 /* Pods-EveryFeed.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"EveryFeed/Preview Content\"";
 				DEVELOPMENT_TEAM = 44BN78992X;
@@ -283,6 +350,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhuhaoyu.EveryFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "EveryFeed/EveryFeed-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -290,9 +359,11 @@
 		};
 		AC449B8125DBEC95001A844D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0805FC94828F849219A6404D /* Pods-EveryFeed.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"EveryFeed/Preview Content\"";
 				DEVELOPMENT_TEAM = 44BN78992X;
@@ -305,6 +376,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhuhaoyu.EveryFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "EveryFeed/EveryFeed-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

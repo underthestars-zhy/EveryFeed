@@ -8,47 +8,132 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var showDetail = false
+    
+    @StateObject var data = DataManager()
     
     var body: some View {
         TabView {
-            Button(action: {}, label: {
-                Text("Button")
-            })
-            .tabItem {
-                Image(systemName: "message.fill")
-                Text("Message")
-            }
-            NavigationView {
-                Form {
-                    Section(header: Text("Zhu Haoyu")) {
-                        NavigationLink(destination: FeedBack(appName: "EveryCheck")) {
-                            Text("EveryCheck")
-                        }
-                        NavigationLink(destination: FeedBack(appName: "EveryRead")) {
-                            Text("EveryRead")
-                        }
-                        NavigationLink(destination: FeedBack(appName: "EveryReed")) {
-                            Text("EveryFeed")
+            MeesageView()
+                .environmentObject(data)
+                .tabItem {
+                    Image(systemName: "message.fill")
+                    Text("Message")
+                }
+            FeedBackView()
+                .environmentObject(data)
+                .tabItem {
+                    Image(systemName: "ladybug.fill")
+                    Text("FeedBack")
+                }
+            SettingView()
+                .environmentObject(data)
+                .tabItem{
+                Image(systemName: "gearshape.fill")
+                Text("Seeting")
+                }
+        }
+    }
+    
+    
+}
+
+struct MeesageView: View {
+    @EnvironmentObject var data:DataManager
+    var body: some View {
+        NavigationView {
+            Form {
+                if data.account.count != 0 {
+                    Section(header: Text("Your Item")) {
+                        ForEach(0..<data.account.count) {count in
+                            NavigationLink(destination: MyApp()) {
+                                Text(data.account[count])
+                            }
                         }
                     }
                 }
-                .navigationTitle("FeedBack")
-            }
-            .tabItem {
-                Image(systemName: "ladybug.fill")
-                Text("FeedBack")
-            }
-            NavigationView {
-                Form {
-                    
+                if data.feedApp.count != 0 {
+                    Section(header: Text("User")) {
+                        ForEach(0..<data.feedApp.count) {count in
+                            NavigationLink.init(
+                                destination: Message(),
+                                label: {
+                                    Text(data.feedApp[count])
+                                    Spacer()
+                                    Text(getNotFinishNum(count: count))
+                                        .foregroundColor(.gray)
+                                })
+                        }
+                    }
+                } else {
+                    Section(header: Text("Message")) {
+                        Text("Sorry No Message")
+                    }
                 }
-                .navigationTitle("Setting")
             }
-                .tabItem{
-                    Image(systemName: "gearshape.fill")
-                    Text("Seeting")
+            .navigationTitle("Message")
+        }
+    }
+    
+    func getNotFinishNum(count:Int) -> String{
+        guard data.notFinishCount.count > count else {
+            return ""
+        }
+        guard data.notFinishCount[count] != 0 else {
+            return ""
+        }
+        return "\(data.notFinishCount[count])"
+    }
+}
+
+
+struct FeedBackView: View {
+    @EnvironmentObject var data:DataManager
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Zhu Haoyu")) {
+                    NavigationLink(destination: FeedBack(appName: "EveryCheck").environmentObject(self.data)) {
+                        Text("EveryCheck")
+                    }
+                    NavigationLink(destination: FeedBack(appName: "EveryFeed").environmentObject(self.data)) {
+                        Text("EveryFeed")
+                    }
                 }
+            }
+            .navigationBarTitle(Text("FeedBack"), displayMode: .automatic)
+        }
+    }
+}
+
+struct SettingView: View {
+    @EnvironmentObject var data:DataManager
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Account")) {
+                    if data.account.count == 0 {
+                        Label("No Account", systemImage: "xmark.octagon.fill")
+                            .listItemTint(.red)
+                    } else {
+                        ForEach(0..<data.account.count) {count in
+                            NavigationLink(destination: MyApp()) {
+                                Text(data.account[count])
+                            }
+                        }
+                    }
+                }
+                
+                Section(header: Text("Other")) {
+                    Label("By Zhu Haoyu", systemImage: "person.circle")
+                    Link(destination: URL.init(string: "https://github.com/underthestars-zhy")!) {
+                        Label("See me on GitHub", systemImage: "hands.sparkles.fill")
+                    }
+                    Link(destination: URL.init(string: "https://github.com/underthestars-zhy")!) {
+                        Label("Document", systemImage: "doc")
+                    }
+                }
+            }
+            .navigationTitle("Setting")
         }
     }
 }
