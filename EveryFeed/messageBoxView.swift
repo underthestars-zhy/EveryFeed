@@ -8,13 +8,26 @@
 import SwiftUI
 
 struct messageBoxView: View {
+    var box:messageBox
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            Section(header: Text("title")) {
+                Text(box.title)
+            }
+            Section(header: Text("body")) {
+                Text(box.body)
+                    .padding(4)
+            }
+        }
+        .navigationBarTitle(Text(box.title), displayMode: .inline)
+        .navigationBarItems(trailing: Button(action: {}, label: {
+            Image(systemName: "arrowshape.turn.up.left.fill")
+        }).disabled(!box.canReply))
     }
 }
 
-struct messageBoxView_Previews: PreviewProvider {
-    static var previews: some View {
-        messageBoxView()
-    }
-}
+//struct messageBoxView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        messageBoxView(box: messageBox())
+//    }
+//}

@@ -72,6 +72,7 @@ struct MeesageView: View {
             }
             .navigationTitle("Message")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     func getNotFinishNum(count:Int) -> String{

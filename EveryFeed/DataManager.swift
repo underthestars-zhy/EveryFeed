@@ -70,7 +70,7 @@ class DataManager:ObservableObject {
             setFeedApp(name: appName)
             updateId(appName: appName)
             
-            let item = messageBox(isBug: true, title: title, date: Date(), rate: rates, major: influences, url: nil, canHelp: nil, mail: nil)
+            let item = messageBox(isBug: true, title: title, body: body, date: Date(), rate: rates, major: influences, url: nil, canHelp: nil, mail: nil, canReply: false)
             
             saveMessageBox(name: appName, saveItem: item)
             return true
@@ -93,7 +93,7 @@ class DataManager:ObservableObject {
             setFeedApp(name: appName)
             updateId(appName: appName)
             
-            let item = messageBox(isBug: false, title: title, date: Date(), rate: nil, major: nil, url: url, canHelp: canHelp, mail: email)
+            let item = messageBox(isBug: false, title: title, body: body, date: Date(), rate: nil, major: nil, url: url, canHelp: canHelp, mail: email, canReply: false)
             
             saveMessageBox(name: appName, saveItem: item)
             return true
@@ -181,12 +181,14 @@ class DataManager:ObservableObject {
 struct messageBox:Codable, Identifiable {
     let isBug:Bool
     let title:String
+    let body:String
     let date:Date
     let rate:Int?
     let major:Bool?
     let url:String?
     let canHelp:Bool?
     let mail:String?
+    var canReply = false
     
     var replyBox = [String]()
     
