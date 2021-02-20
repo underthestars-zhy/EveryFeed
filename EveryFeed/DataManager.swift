@@ -14,7 +14,10 @@ class DataManager:ObservableObject {
     let userDefaults = UserDefaults.standard
     
     let appId = "1531724bdac69601ef45715991ecd1fe"
-    let getUser = ["384d30672948": "EveryCheck", "83de161a42": "EveryFeed"]
+    let getUser = [
+        "384d30672948": ("EveryCheck", 2),
+        "83de161a427u": ("EveryFeed", 2),
+    ]
     
     
     
@@ -23,7 +26,6 @@ class DataManager:ObservableObject {
     @Published var account = [String]()
     
     init(){
-        Bmob.register(withAppKey: "1531724bdac69601ef45715991ecd1fe")
         feedApp = (userDefaults.array(forKey: "feedApp")) as? Array<String> ?? [String]()
         notFinishCount = (userDefaults.array(forKey: "notFinishCount")) as? Array<Int> ?? [Int]()
         account = (userDefaults.array(forKey: "account")) as? Array<String> ?? [String]()
@@ -67,6 +69,10 @@ class DataManager:ObservableObject {
             gamescore.saveInBackground()
             setFeedApp(name: appName)
             updateId(appName: appName)
+            
+            let item = messageBox(isBug: true, title: title, date: Date(), rate: rates, major: influences, url: nil, canHelp: nil, mail: nil)
+            
+            saveMessageBox(name: appName, saveItem: item)
             return true
         } else {
             let gamescore:BmobObject = BmobObject(className: appName)
@@ -86,6 +92,10 @@ class DataManager:ObservableObject {
             gamescore.saveInBackground()
             setFeedApp(name: appName)
             updateId(appName: appName)
+            
+            let item = messageBox(isBug: false, title: title, date: Date(), rate: nil, major: nil, url: url, canHelp: canHelp, mail: email)
+            
+            saveMessageBox(name: appName, saveItem: item)
             return true
         }
         
@@ -114,4 +124,71 @@ class DataManager:ObservableObject {
         }
     }
     
+    func getMessageBox(name:String) -> [messageBox] {
+        let decoder = JSONDecoder()
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+        let fileName = path! + "/" + name + ".plist"
+        // print(fileName)
+        // print(NSArray(contentsOfFile: fileName)?.count)
+        let allItems = NSArray(contentsOfFile: fileName) as? Array<Data>
+        var array = [messageBox]()
+        var count = 0
+        if let items = allItems {
+            for item in items {
+                var box = try! decoder.decode(messageBox.self, from: item)
+                box.id = count
+                array.append(box)
+                count += 1
+            }
+        }
+        return array.reversed()
+    }
+    
+    func getTimeStringArray(items: [messageBox]) -> Array<String> {
+        var title = ""
+        var array = [String]()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        for item in items {
+            print(dateFormatter.string(from: item.date))
+            if title != dateFormatter.string(from: item.date) {
+                title = dateFormatter.string(from: item.date)
+                array.append(title)
+            }
+        }
+        return array
+    }
+    
+    func saveMessageBox(name:String, saveItem:messageBox) {
+        var boxArray = getMessageBox(name: name)
+        boxArray.append(saveItem)
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+        let fileName = path! + "/" + name + ".plist"
+        encoder(items: boxArray).write(toFile: fileName, atomically: true)
+    }
+    
+    func encoder(items: [messageBox]) -> NSArray {
+        let encoder = JSONEncoder()
+        var array = [Data]()
+        for item in items {
+            array.append(try! encoder.encode(item))
+        }
+        return array as NSArray
+    }
+    
+}
+
+struct messageBox:Codable, Identifiable {
+    let isBug:Bool
+    let title:String
+    let date:Date
+    let rate:Int?
+    let major:Bool?
+    let url:String?
+    let canHelp:Bool?
+    let mail:String?
+    
+    var replyBox = [String]()
+    
+    var id:Int = 0
 }

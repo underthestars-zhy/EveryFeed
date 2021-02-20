@@ -43,7 +43,7 @@ struct MeesageView: View {
         NavigationView {
             Form {
                 if data.account.count != 0 {
-                    Section(header: Text("Your Item")) {
+                    Section(header: Text("App")) {
                         ForEach(0..<data.account.count) {count in
                             NavigationLink(destination: MyApp()) {
                                 Text(data.account[count])
@@ -55,7 +55,7 @@ struct MeesageView: View {
                     Section(header: Text("User")) {
                         ForEach(0..<data.feedApp.count) {count in
                             NavigationLink.init(
-                                destination: Message(),
+                                destination: Message(name: data.feedApp[count]).environmentObject(data),
                                 label: {
                                     Text(data.feedApp[count])
                                     Spacer()
@@ -123,11 +123,15 @@ struct SettingView: View {
                     }
                 }
                 
-                Section(header: Text("Other")) {
+                Section(header: Text("Author")) {
                     Label("By Zhu Haoyu", systemImage: "person.circle")
                     Link(destination: URL.init(string: "https://github.com/underthestars-zhy")!) {
                         Label("See me on GitHub", systemImage: "hands.sparkles.fill")
+                            .foregroundColor(.gray)
                     }
+                }
+                
+                Section(header: Text("Other")) {
                     Link(destination: URL.init(string: "https://github.com/underthestars-zhy")!) {
                         Label("Document", systemImage: "doc")
                     }

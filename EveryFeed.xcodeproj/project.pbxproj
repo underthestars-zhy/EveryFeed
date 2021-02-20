@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC1B102C25E0EF4200760793 /* messageBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1B102B25E0EF4200760793 /* messageBoxView.swift */; };
 		AC449B7425DBEC93001A844D /* EveryFeedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B7325DBEC93001A844D /* EveryFeedApp.swift */; };
 		AC449B7625DBEC93001A844D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B7525DBEC93001A844D /* ContentView.swift */; };
 		AC449B7825DBEC95001A844D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC449B7725DBEC95001A844D /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 		0805FC94828F849219A6404D /* Pods-EveryFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EveryFeed.release.xcconfig"; path = "Target Support Files/Pods-EveryFeed/Pods-EveryFeed.release.xcconfig"; sourceTree = "<group>"; };
 		8761E9D475A0FB12F4BDC4D6 /* Pods-EveryFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EveryFeed.debug.xcconfig"; path = "Target Support Files/Pods-EveryFeed/Pods-EveryFeed.debug.xcconfig"; sourceTree = "<group>"; };
 		9414804AFA0A99B13B810135 /* Pods_EveryFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EveryFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC1B102B25E0EF4200760793 /* messageBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = messageBoxView.swift; sourceTree = "<group>"; };
 		AC449B7025DBEC93001A844D /* EveryFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EveryFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC449B7325DBEC93001A844D /* EveryFeedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveryFeedApp.swift; sourceTree = "<group>"; };
 		AC449B7525DBEC93001A844D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				AC449B7525DBEC93001A844D /* ContentView.swift */,
 				AC449B8D25DC0478001A844D /* MyApp.swift */,
 				AC449B8B25DC046B001A844D /* Message.swift */,
+				AC1B102B25E0EF4200760793 /* messageBoxView.swift */,
 				AC449B8225DBECA4001A844D /* FeedBack.swift */,
 				AC449B7725DBEC95001A844D /* Assets.xcassets */,
 				AC449B7C25DBEC95001A844D /* Info.plist */,
@@ -209,6 +212,7 @@
 				AC449B7625DBEC93001A844D /* ContentView.swift in Sources */,
 				AC449B7425DBEC93001A844D /* EveryFeedApp.swift in Sources */,
 				AC449B8E25DC0478001A844D /* MyApp.swift in Sources */,
+				AC1B102C25E0EF4200760793 /* messageBoxView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
