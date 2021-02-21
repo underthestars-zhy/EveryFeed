@@ -38,7 +38,7 @@ struct messageBoxView: View {
                                 }
                             }())
                     }
-                    if box.major! {
+                    if box.major ?? false {
                         Text("Extremely disturbing")
                             .foregroundColor(.red)
                     }

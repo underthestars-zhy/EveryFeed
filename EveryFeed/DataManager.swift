@@ -144,6 +144,20 @@ class DataManager:ObservableObject {
         return array.reversed()
     }
     
+    func getMessageBox(date:String, appName:String) -> [messageBox] {
+        var array = [messageBox]()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let items = appItem[appName] {
+            for item in items {
+                if dateFormatter.string(from: item.date) == date {
+                    array.append(item)
+                }
+            }
+        }
+        return array
+    }
+    
     func getTimeStringArray(items: [messageBox]) -> Array<String> {
         var title = ""
         var array = [String]()
@@ -194,6 +208,8 @@ class DataManager:ObservableObject {
             if itemArray[0] == name && itemArray[1] == i {
                 account.remove(at: count)
                 userDefaults.set(account, forKey: "account")
+                userDefaults.set(0, forKey: "\(name)Finish")
+                userDefaults.set(0, forKey: "\(name)Loud")
                 userDefaults.synchronize()
                 return
             }
@@ -201,7 +217,43 @@ class DataManager:ObservableObject {
         }
     }
     
+    @Published var appItem = [String:[messageBox]]()
+    
+    func startGetAppItem(appName:String) {
+        let query2:BmobQuery = BmobQuery(className: appName)
+        query2.findObjectsInBackground { (array, error) in
+            var tArray = [messageBox]()
+            if let items = array {
+                for item in items {
+                    let boxObjc = item as! BmobObject
+                    if boxObjc.object(forKey: "isBug") as! Bool {
+                        let box = messageBox(isBug: true, title: boxObjc.object(forKey: "title") as! String, body: boxObjc.object(forKey: "body") as! String, date: boxObjc.createdAt, rate: boxObjc.object(forKey: "rates") as? Int, major: boxObjc.object(forKey: "influences") as? Bool, url: nil, canHelp: nil, mail: nil)
+                        tArray.append(box)
+                    } else {
+                        let box = messageBox(isBug: false, title: boxObjc.object(forKey: "title") as! String, body: boxObjc.object(forKey: "body") as! String, date: boxObjc.createdAt, rate: nil, major: nil, url: boxObjc.object(forKey: "url") as? String, canHelp: boxObjc.object(forKey: "help") as? Bool, mail: boxObjc.object(forKey: "email") as? String)
+                        tArray.append(box)
+                    }
+                }
+            }
+            var count = 0
+            for boxItem in tArray.sorted(by: { item1, item2 in
+                return item1.date > item2.date
+            }) {
+                var tBox = messageBox(isBug: boxItem.isBug, title: boxItem.title, body: boxItem.title, date: boxItem.date, rate: boxItem.rate, major: boxItem.major, url: boxItem.url, canHelp: boxItem.canHelp, mail: boxItem.mail)
+                tBox.id = count
+                if self.appItem[appName] == nil {
+                    self.appItem[appName] = [messageBox]()
+                    self.appItem[appName]?.append(tBox)
+                }else {
+                    self.appItem[appName]?.append(tBox)
+                }
+                count += 1
+            }
+        }
+    }
+   
 }
+
 
 struct messageBox:Codable, Identifiable {
     let isBug:Bool
