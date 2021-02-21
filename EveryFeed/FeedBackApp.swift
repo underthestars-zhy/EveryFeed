@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedBackApp: View {
     let name:String
+    let isRoot:Bool
     @EnvironmentObject var data:DataManager
     @State var showRloud = false
     var body: some View {
@@ -16,12 +17,12 @@ struct FeedBackApp: View {
             if showRloud {
                 Text("Louding ...")
             } else {
-                if data.appItem[name] != nil || data.appItem[name]?.count != 0 {
+                if data.appItem[name] != nil && data.appItem[name]?.count != 0 {
                     ForEach(0..<data.getTimeStringArray(items: data.appItem[name] ?? []).count) { count in
                         Section(header: Text(data.getTimeStringArray(items: data.appItem[name] ?? [])[count])) {
                             ForEach(data.getMessageBox(date: data.getTimeStringArray(items: data.appItem[name] ?? [])[count], appName: name)) {item in
                                 NavigationLink(
-                                    destination: messageBoxView(box: item),
+                                    destination: messageBoxView(box: item, isRoot: isRoot),
                                     label: {
                                         Label(item.title, systemImage: item.isBug ? "ladybug.fill" : "seal.fill")
                                     })
@@ -59,6 +60,6 @@ struct FeedBackApp: View {
 
 struct FeedBackApp_Previews: PreviewProvider {
     static var previews: some View {
-        FeedBackApp(name: "")
+        FeedBackApp(name: "", isRoot: false)
     }
 }

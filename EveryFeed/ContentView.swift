@@ -51,7 +51,7 @@ struct MeesageView: View {
                 if data.account.count != 0 {
                     Section(header: Text("App")) {
                         ForEach(0..<data.account.count) {count in
-                            NavigationLink(destination: FeedBackApp(name: data.account[count][0])) {
+                            NavigationLink(destination: FeedBackApp(name: data.account[count][0], isRoot: data.account[count][1] == "1" ? false : true)) {
                                 Label(data.account[count][0], systemImage: data.account[count][1] == "1" ? "eye.fill" : "person.fill")
                             }
                         }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct messageBoxView: View {
     var box:messageBox
+    var isRoot:Bool
     var body: some View {
         Form {
             Section(header: Text("title")) {
@@ -78,7 +79,7 @@ struct messageBoxView: View {
         .navigationBarTitle(Text(box.title), displayMode: .inline)
         .navigationBarItems(trailing: Button(action: {}, label: {
             Image(systemName: "arrowshape.turn.up.left.fill")
-        }).disabled(!box.canReply))
+        }).disabled(!box.canReply && !isRoot))
     }
 }
 
