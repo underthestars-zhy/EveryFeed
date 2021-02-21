@@ -45,7 +45,7 @@ struct MeesageView: View {
                 if data.account.count != 0 {
                     Section(header: Text("App")) {
                         ForEach(0..<data.account.count) {count in
-                            NavigationLink(destination: MyApp()) {
+                            NavigationLink(destination: FeedBackApp()) {
                                 Text(data.account[count][0])
                             }
                         }
@@ -118,7 +118,7 @@ struct SettingView: View {
                             .listItemTint(.red)
                     } else {
                         ForEach(0..<data.account.count) {count in
-                            NavigationLink(destination: MyApp()) {
+                            NavigationLink(destination: MyApp(appArray: data.account[count]).environmentObject(data)) {
                                 Text(data.account[count][0])
                             }
                         }

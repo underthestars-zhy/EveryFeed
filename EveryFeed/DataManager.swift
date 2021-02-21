@@ -188,6 +188,19 @@ class DataManager:ObservableObject {
         return false
     }
     
+    func deleteAccount(name: String, _  i:String) {
+        var count = 0
+        for itemArray in account {
+            if itemArray[0] == name && itemArray[1] == i {
+                account.remove(at: count)
+                userDefaults.set(account, forKey: "account")
+                userDefaults.synchronize()
+                return
+            }
+            count += 1
+        }
+    }
+    
 }
 
 struct messageBox:Codable, Identifiable {
