@@ -53,9 +53,11 @@ struct FeedBack: View {
             } else {
                 Section(header: Text("Resources")) {
                     TextField("url", text: $url)
+                        .textCase(.lowercase)
                     Toggle("Can Help", isOn: $canHelp)
                     if canHelp {
                         TextField("email", text: $email)
+                            .textCase(.lowercase)
                     }
                 }
                 

@@ -28,8 +28,8 @@ struct ContentView: View {
             SettingView()
                 .environmentObject(data)
                 .tabItem{
-                Image(systemName: "gearshape.fill")
-                Text("Seeting")
+                    Image(systemName: "gearshape.fill")
+                    Text("Seeting")
                 }
         }
     }
@@ -46,7 +46,7 @@ struct MeesageView: View {
                     Section(header: Text("App")) {
                         ForEach(0..<data.account.count) {count in
                             NavigationLink(destination: MyApp()) {
-                                Text(data.account[count])
+                                Text(data.account[count][0])
                             }
                         }
                     }
@@ -66,7 +66,7 @@ struct MeesageView: View {
                     }
                 } else {
                     Section(header: Text("Message")) {
-                        Text("Sorry No Message")
+                        Text("Sorry No User Message")
                     }
                 }
             }
@@ -108,6 +108,7 @@ struct FeedBackView: View {
 
 struct SettingView: View {
     @EnvironmentObject var data:DataManager
+    @State var alertIsPresented = false
     var body: some View {
         NavigationView {
             Form {
@@ -118,7 +119,7 @@ struct SettingView: View {
                     } else {
                         ForEach(0..<data.account.count) {count in
                             NavigationLink(destination: MyApp()) {
-                                Text(data.account[count])
+                                Text(data.account[count][0])
                             }
                         }
                     }
@@ -138,10 +139,71 @@ struct SettingView: View {
                     }
                 }
             }
+            .navigationBarItems(trailing: Button(action: {
+                alert()
+            }){
+                Image(systemName: "plus")
+            })
             .navigationTitle("Setting")
         }
     }
+    
+    private func alert() {
+        let alert = UIAlertController(title: "Account", message: "Need verification to add", preferredStyle: .alert)
+        var theTextFiled = UITextField()
+        alert.addTextField() { textField in
+            textField.placeholder = "Enter confirmation code"
+            theTextFiled = textField
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in })
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            if data.addAccount(number: theTextFiled.text ?? "") {
+                print("OK")
+            } else {
+                print("Not OK")
+            }
+        })
+        showAlert(alert: alert)
+    }
+
+    func showAlert(alert: UIAlertController) {
+        if let controller = topMostViewController() {
+            controller.present(alert, animated: true)
+        }
+    }
+
+    private func keyWindow() -> UIWindow? {
+        return UIApplication.shared.connectedScenes
+        .filter {$0.activationState == .foregroundActive}
+        .compactMap {$0 as? UIWindowScene}
+        .first?.windows.filter {$0.isKeyWindow}.first
+    }
+
+    private func topMostViewController() -> UIViewController? {
+        guard let rootController = keyWindow()?.rootViewController else {
+            return nil
+        }
+        return topMostViewController(for: rootController)
+    }
+
+    private func topMostViewController(for controller: UIViewController) -> UIViewController {
+        if let presentedController = controller.presentedViewController {
+            return topMostViewController(for: presentedController)
+        } else if let navigationController = controller as? UINavigationController {
+            guard let topController = navigationController.topViewController else {
+                return navigationController
+            }
+            return topMostViewController(for: topController)
+        } else if let tabController = controller as? UITabBarController {
+            guard let topController = tabController.selectedViewController else {
+                return tabController
+            }
+            return topMostViewController(for: topController)
+        }
+        return controller
+    }
 }
+
 
 
 struct ContentView_Previews: PreviewProvider {

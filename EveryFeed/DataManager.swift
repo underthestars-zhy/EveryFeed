@@ -23,12 +23,12 @@ class DataManager:ObservableObject {
     
     @Published var feedApp = [String]()
     @Published var notFinishCount = [Int]()
-    @Published var account = [String]()
+    @Published var account = [[String]]()
     
     init(){
         feedApp = (userDefaults.array(forKey: "feedApp")) as? Array<String> ?? [String]()
         notFinishCount = (userDefaults.array(forKey: "notFinishCount")) as? Array<Int> ?? [Int]()
-        account = (userDefaults.array(forKey: "account")) as? Array<String> ?? [String]()
+        account = (userDefaults.array(forKey: "account")) as? [[String]] ?? [[String]]()
     }
     
     func setFeedApp(name:String) {
@@ -174,6 +174,18 @@ class DataManager:ObservableObject {
             array.append(try! encoder.encode(item))
         }
         return array as NSArray
+    }
+    
+    func addAccount(number:String) -> Bool {
+        for (itemNumber, t) in getUser {
+            if itemNumber == number {
+                account.append([t.0, "\(t.1)"])
+                userDefaults.set(account, forKey: "account")
+                userDefaults.synchronize()
+                return true
+            }
+        }
+        return false
     }
     
 }
