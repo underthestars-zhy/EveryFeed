@@ -9,6 +9,34 @@ import SwiftUI
 
 struct messageBoxView: View {
     var box:messageBox
+    let name:String
+    @EnvironmentObject var data:DataManager
+    var isRoot:Bool
+    var body: some View {
+        if isRoot {
+            messageBoxForm(box: box, name: name, isRoot: isRoot).environmentObject(data)
+                .navigationBarItems(trailing: Menu {
+                    Button("Reply", action: {})
+                    Button("Save", action: {})
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .imageScale(.large)
+                })
+        } else {
+            messageBoxForm(box: box, name: name, isRoot: isRoot).environmentObject(data)
+                .navigationBarItems(trailing: Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "arrowshape.turn.up.left.fill")
+                }).disabled(!box.canReply))
+        }
+    }
+}
+
+struct messageBoxForm: View {
+    var box:messageBox
+    let name:String
+    @EnvironmentObject var data:DataManager
     var isRoot:Bool
     var body: some View {
         Form {
@@ -67,19 +95,32 @@ struct messageBoxView: View {
                 }
             }
             
-            Section(header: Text("Message")) {
-                if box.replyBox.count == 0 {
-                    Text("No reply, processing...")
-                        .foregroundColor(.red)
-                } else {
-                    
+            if !isRoot {
+                Section(header: Text("status")) {
+                    if box.isRead {
+                        Text("already received!")
+                            .foregroundColor(.green)
+                    } else {
+                        Text("Processing...")
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+            
+            if box.replyBox.count != 0 {
+                ForEach(0..<box.replyBox.count) { count in
+                    Section(header: Text("Message\(count)")) {
+                        
+                    }
                 }
             }
         }
+        .onAppear(perform: {
+            if self.isRoot && !self.box.isRead {
+                data.readMessageBox(box: box, name: name)
+            }
+        })
         .navigationBarTitle(Text(box.title), displayMode: .inline)
-        .navigationBarItems(trailing: Button(action: {}, label: {
-            Image(systemName: "arrowshape.turn.up.left.fill")
-        }).disabled(!box.canReply && !isRoot))
     }
 }
 

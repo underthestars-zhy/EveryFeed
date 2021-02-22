@@ -22,7 +22,7 @@ struct FeedBackApp: View {
                         Section(header: Text(data.getTimeStringArray(items: data.appItem[name] ?? [])[count])) {
                             ForEach(data.getMessageBox(date: data.getTimeStringArray(items: data.appItem[name] ?? [])[count], appName: name)) {item in
                                 NavigationLink(
-                                    destination: messageBoxView(box: item, isRoot: isRoot),
+                                    destination: messageBoxView(box: item, name: name, isRoot: isRoot).environmentObject(data),
                                     label: {
                                         Label(item.title, systemImage: item.isBug ? "ladybug.fill" : "seal.fill")
                                     })
