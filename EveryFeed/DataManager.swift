@@ -66,12 +66,13 @@ class DataManager:ObservableObject {
             gamescore.setObject(Date(), forKey: "date")
             gamescore.setObject(true, forKey: "isBug")
             gamescore.setObject(false, forKey: "isRead")
+            gamescore.setObject(false, forKey: "canReply")
             gamescore.setObject([String](), forKey: "reply")
             setFeedApp(name: appName)
             
             gamescore.saveInBackground {[weak gamescore] (_, _) in
                 if let game = gamescore {
-                    let item = messageBox(isBug: true, title: title, body: body, date: Date(), rate: rates, major: influences, url: nil, canHelp: nil, mail: nil, canReply: false, isRead: false, objectid: game.objectId)
+                    let item = messageBox(isBug: true, title: title, body: body, date: Date(), rate: rates, major: influences, url: nil, canHelp: nil, mail: nil, canReply: false, isRead: false, objectid: game.objectId, replyBox: [String]())
                     
                     self.saveMessageBox(name: appName, saveItem: item)
                 }
@@ -93,12 +94,13 @@ class DataManager:ObservableObject {
             gamescore.setObject(Date(), forKey: "date")
             gamescore.setObject(false, forKey: "isBug")
             gamescore.setObject(false, forKey: "isRead")
+            gamescore.setObject(false, forKey: "canReply")
             gamescore.setObject([String](), forKey: "reply")
             setFeedApp(name: appName)
             
             gamescore.saveInBackground {[weak gamescore] (_, _) in
                 if let game = gamescore {
-                    let item = messageBox(isBug: false, title: title, body: body, date: Date(), rate: nil, major: nil, url: url, canHelp: canHelp, mail: email, canReply: false, isRead: false, objectid: game.objectId)
+                    let item = messageBox(isBug: false, title: title, body: body, date: Date(), rate: nil, major: nil, url: url, canHelp: canHelp, mail: email, canReply: false, isRead: false, objectid: game.objectId, replyBox: [String]())
                     
                     self.saveMessageBox(name: appName, saveItem: item)
                 }
@@ -214,18 +216,37 @@ class DataManager:ObservableObject {
         }
     }
     
-    @Published var loudBox:messageBox!
+    @Published var loudBox = messageBox(isBug: true, title: "", body: "", date: Date(), rate: nil, major: nil, url: nil, canHelp: nil, mail: nil, canReply: false, isRead: false, objectid: "", replyBox: [String]())
     var canLoud = false
     
     func updateMessageBox(name:String, box:messageBox) {
+        print(box.objectid)
         let query:BmobQuery = BmobQuery(className: name)
         query.getObjectInBackground(withId: box.objectid) { (obj, error) in
             if error == nil {
                 if let game = obj{
                     if self.canLoud {
+                        print("Uesd")
                         self.loudBox.isRead = game.object(forKey: "isRead") as! Bool
+                        self.loudBox.replyBox = game.object(forKey: "reply") as! [String]
+                        self.loudBox.canReply = game.object(forKey: "canReply") as! Bool
                         self.updateMessageBoxInFile(box: self.loudBox, name: name)
                     }
+                }
+            }
+        }
+    }
+    
+    func addMessageToBox(name:String, reply:String, isRoot:Bool) {
+        let query:BmobQuery = BmobQuery(className: name)
+        // print(loudBox.objectid)
+        self.loudBox.replyBox.append(reply)
+        query.getObjectInBackground(withId: loudBox.objectid) { (obj, error) in
+            if error == nil {
+                if let game = obj{
+                    game.setObject(isRoot, forKey: "canReply")
+                    game.setObject(self.loudBox.replyBox, forKey: "reply")
+                    game.updateInBackground()
                 }
             }
         }
@@ -248,7 +269,7 @@ class DataManager:ObservableObject {
     }
     
     func setBox(box:messageBox) {
-        self.loudBox = messageBox(isBug: box.isBug, title: box.title, body: box.body, date: box.date, rate: box.rate, major: box.major, url: box.url, canHelp: box.canHelp, mail: box.mail, isRead: box.isRead, objectid: box.objectid)
+        self.loudBox = messageBox(isBug: box.isBug, title: box.title, body: box.body, date: box.date, rate: box.rate, major: box.major, url: box.url, canHelp: box.canHelp, mail: box.mail, canReply: box.canReply, isRead: box.isRead, objectid: box.objectid, replyBox: box.replyBox)
     }
     
     func encoder(items: [messageBox]) -> NSArray {
@@ -297,10 +318,10 @@ class DataManager:ObservableObject {
                 for item in items {
                     let boxObjc = item as! BmobObject
                     if boxObjc.object(forKey: "isBug") as! Bool {
-                        let box = messageBox(isBug: true, title: boxObjc.object(forKey: "title") as! String, body: boxObjc.object(forKey: "body") as! String, date: boxObjc.createdAt, rate: boxObjc.object(forKey: "rates") as? Int, major: boxObjc.object(forKey: "influences") as? Bool, url: nil, canHelp: nil, mail: nil, isRead: boxObjc.object(forKey: "isRead") as! Bool, objectid: boxObjc.objectId)
+                        let box = messageBox(isBug: true, title: boxObjc.object(forKey: "title") as! String, body: boxObjc.object(forKey: "body") as! String, date: boxObjc.createdAt, rate: boxObjc.object(forKey: "rates") as? Int, major: boxObjc.object(forKey: "influences") as? Bool, url: nil, canHelp: nil, mail: nil, canReply: boxObjc.object(forKey: "canReply") as! Bool, isRead: boxObjc.object(forKey: "isRead") as! Bool, objectid: boxObjc.objectId, replyBox: boxObjc.object(forKey: "reply") as! [String])
                         tArray.append(box)
                     } else {
-                        let box = messageBox(isBug: false, title: boxObjc.object(forKey: "title") as! String, body: boxObjc.object(forKey: "body") as! String, date: boxObjc.createdAt, rate: nil, major: nil, url: boxObjc.object(forKey: "url") as? String, canHelp: boxObjc.object(forKey: "help") as? Bool, mail: boxObjc.object(forKey: "email") as? String, isRead: boxObjc.object(forKey: "isRead") as! Bool, objectid: boxObjc.objectId)
+                        let box = messageBox(isBug: false, title: boxObjc.object(forKey: "title") as! String, body: boxObjc.object(forKey: "body") as! String, date: boxObjc.createdAt, rate: nil, major: nil, url: boxObjc.object(forKey: "url") as? String, canHelp: boxObjc.object(forKey: "help") as? Bool, mail: boxObjc.object(forKey: "email") as? String, canReply: boxObjc.object(forKey: "canReply") as! Bool, isRead: boxObjc.object(forKey: "isRead") as! Bool, objectid: boxObjc.objectId, replyBox: boxObjc.object(forKey: "reply") as! [String])
                         tArray.append(box)
                     }
                 }
@@ -309,7 +330,7 @@ class DataManager:ObservableObject {
             for boxItem in tArray.sorted(by: { item1, item2 in
                 return item1.date > item2.date
             }) {
-                var tBox = messageBox(isBug: boxItem.isBug, title: boxItem.title, body: boxItem.title, date: boxItem.date, rate: boxItem.rate, major: boxItem.major, url: boxItem.url, canHelp: boxItem.canHelp, mail: boxItem.mail, isRead: boxItem.isRead, objectid: boxItem.objectid)
+                var tBox = messageBox(isBug: boxItem.isBug, title: boxItem.title, body: boxItem.title, date: boxItem.date, rate: boxItem.rate, major: boxItem.major, url: boxItem.url, canHelp: boxItem.canHelp, mail: boxItem.mail, canReply: boxItem.canReply, isRead: boxItem.isRead, objectid: boxItem.objectid, replyBox: boxItem.replyBox)
                 tBox.id = count
                 if self.appItem[appName] == nil {
                     self.appItem[appName] = [messageBox]()
@@ -335,11 +356,11 @@ struct messageBox:Codable, Identifiable {
     let url:String?
     let canHelp:Bool?
     let mail:String?
-    var canReply = false
+    var canReply:Bool
     var isRead:Bool
     let objectid:String
     
-    var replyBox = [String]()
+    var replyBox: [String]
     
     var id:Int = 0
 }

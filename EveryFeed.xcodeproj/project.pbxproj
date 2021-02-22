@@ -17,6 +17,7 @@
 		AC449B8825DBEFBA001A844D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8725DBEFBA001A844D /* DataManager.swift */; };
 		AC449B8C25DC046B001A844D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8B25DC046B001A844D /* Message.swift */; };
 		AC449B8E25DC0478001A844D /* MyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC449B8D25DC0478001A844D /* MyApp.swift */; };
+		AC99CCF925E39FF30005AA37 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC99CCF825E39FF30005AA37 /* ReplyView.swift */; };
 		E083FAC220C2EC946CE4244F /* Pods_EveryFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9414804AFA0A99B13B810135 /* Pods_EveryFeed.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		AC449B8725DBEFBA001A844D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		AC449B8B25DC046B001A844D /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		AC449B8D25DC0478001A844D /* MyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApp.swift; sourceTree = "<group>"; };
+		AC99CCF825E39FF30005AA37 /* ReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				AC449B7325DBEC93001A844D /* EveryFeedApp.swift */,
+				AC99CCF825E39FF30005AA37 /* ReplyView.swift */,
 				AC449B7525DBEC93001A844D /* ContentView.swift */,
 				AC449B8D25DC0478001A844D /* MyApp.swift */,
 				AC449B8B25DC046B001A844D /* Message.swift */,
@@ -210,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC449B8325DBECA4001A844D /* FeedBack.swift in Sources */,
+				AC99CCF925E39FF30005AA37 /* ReplyView.swift in Sources */,
 				AC449B8825DBEFBA001A844D /* DataManager.swift in Sources */,
 				AC1B102E25E1F69900760793 /* FeedBackApp.swift in Sources */,
 				AC449B8C25DC046B001A844D /* Message.swift in Sources */,

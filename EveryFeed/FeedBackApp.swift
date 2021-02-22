@@ -30,7 +30,7 @@ struct FeedBackApp: View {
                         }
                     }
                 } else {
-                    Text("Louding ...")
+                    Text("No Message, wait...")
                 }
             }
         }
