@@ -66,6 +66,7 @@ class DataManager:ObservableObject {
             gamescore.setObject(Date(), forKey: "date")
             gamescore.setObject(true, forKey: "isBug")
             gamescore.setObject(false, forKey: "isRead")
+            gamescore.setObject([String](), forKey: "reply")
             setFeedApp(name: appName)
             
             gamescore.saveInBackground {[weak gamescore] (_, _) in
@@ -92,6 +93,7 @@ class DataManager:ObservableObject {
             gamescore.setObject(Date(), forKey: "date")
             gamescore.setObject(false, forKey: "isBug")
             gamescore.setObject(false, forKey: "isRead")
+            gamescore.setObject([String](), forKey: "reply")
             setFeedApp(name: appName)
             
             gamescore.saveInBackground {[weak gamescore] (_, _) in
@@ -147,7 +149,9 @@ class DataManager:ObservableObject {
                 count += 1
             }
         }
-        return array.reversed()
+        return array.sorted {
+            return $0.date > $1.date
+        }
     }
     
     func getMessageBox(date:String, appName:String) -> [messageBox] {
@@ -161,7 +165,9 @@ class DataManager:ObservableObject {
                 }
             }
         }
-        return array
+        return array.sorted {
+            return $0.date > $1.date
+        }
     }
     
     func getTimeStringArray(items: [messageBox]) -> Array<String> {
@@ -206,6 +212,43 @@ class DataManager:ObservableObject {
                 count += 1
             }
         }
+    }
+    
+    @Published var loudBox:messageBox!
+    var canLoud = false
+    
+    func updateMessageBox(name:String, box:messageBox) {
+        let query:BmobQuery = BmobQuery(className: name)
+        query.getObjectInBackground(withId: box.objectid) { (obj, error) in
+            if error == nil {
+                if let game = obj{
+                    if self.canLoud {
+                        self.loudBox.isRead = game.object(forKey: "isRead") as! Bool
+                        self.updateMessageBoxInFile(box: self.loudBox, name: name)
+                    }
+                }
+            }
+        }
+    }
+    
+    func updateMessageBoxInFile(box:messageBox, name:String) {
+        var count = 0
+        var boxArray = getMessageBox(name: name)
+        for item in boxArray {
+            if item.objectid == box.objectid {
+                boxArray.remove(at: count)
+                boxArray.insert(box, at: count)
+                break
+            }
+            count += 1
+        }
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+        let fileName = path! + "/" + name + ".plist"
+        encoder(items: boxArray).write(toFile: fileName, atomically: true)
+    }
+    
+    func setBox(box:messageBox) {
+        self.loudBox = messageBox(isBug: box.isBug, title: box.title, body: box.body, date: box.date, rate: box.rate, major: box.major, url: box.url, canHelp: box.canHelp, mail: box.mail, isRead: box.isRead, objectid: box.objectid)
     }
     
     func encoder(items: [messageBox]) -> NSArray {

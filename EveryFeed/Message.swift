@@ -20,7 +20,7 @@ struct Message: View {
                 Section(header: Text(data.getTimeStringArray(items: data.getMessageBox(name: name))[count])) {
                     ForEach(data.getMessageBox(name: name)) {item in
                         NavigationLink(
-                            destination: messageBoxView(box: item, name: name, isRoot: false),
+                            destination: messageBoxView(box: item, name: name, isRoot: false).environmentObject(data),
                             label: {
                                 Label(item.title, systemImage: item.isBug ? "ladybug.fill" : "seal.fill")
                             })

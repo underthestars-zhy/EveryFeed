@@ -38,87 +38,98 @@ struct messageBoxForm: View {
     let name:String
     @EnvironmentObject var data:DataManager
     var isRoot:Bool
+    @State var canShow = false
     var body: some View {
         Form {
-            Section(header: Text("title")) {
-                Text(box.title)
-            }
-            Section(header: Text("body")) {
-                Text(box.body)
-                    .padding(4)
-            }
-            
-            if box.isBug {
-                Section(header: Text("Info")) {
-                    HStack {
-                        Text("Frequency")
-                        Spacer()
-                        Text("\(box.rate!)")
-                            .foregroundColor({
-                                switch self.box.rate! {
-                                case 1...3:
-                                    return Color.blue
-                                case 4...6:
-                                    return Color.pink
-                                case 7...10:
-                                    return Color.red
-                                default:
-                                    return Color.blue
-                                }
-                            }())
-                    }
-                    if box.major ?? false {
-                        Text("Extremely disturbing")
-                            .foregroundColor(.red)
-                    }
+            if canShow {
+                Section(header: Text("title")) {
+                    Text(data.loudBox.title)
                 }
-            } else {
-                if box.url != "" || box.canHelp! {
-                    Section(header: Text("Resources")) {
-                        if box.url != "" {
-                            if !box.url!.hasPrefix("https://") && !box.url!.hasPrefix("http://") {
-                                Link(destination: URL.init(string: "https://" + box.url!)!) {
-                                    Text("https://" + box.url!)
+                Section(header: Text("body")) {
+                    Text(data.loudBox.body)
+                        .padding(4)
+                }
+                
+                if data.loudBox.isBug {
+                    Section(header: Text("Info")) {
+                        HStack {
+                            Text("Frequency")
+                            Spacer()
+                            Text("\(data.loudBox.rate!)")
+                                .foregroundColor({
+                                    switch self.box.rate ?? 1 {
+                                    case 1...3:
+                                        return Color.blue
+                                    case 4...6:
+                                        return Color.pink
+                                    case 7...10:
+                                        return Color.red
+                                    default:
+                                        return Color.blue
+                                    }
+                                }())
+                        }
+                        if data.loudBox.major ?? false {
+                            Text("Extremely disturbing")
+                                .foregroundColor(.red)
+                        }
+                    }
+                } else {
+                    if data.loudBox.url != "" || data.loudBox.canHelp! {
+                        Section(header: Text("Resources")) {
+                            if data.loudBox.url != "" {
+                                if !data.loudBox.url!.hasPrefix("https://") && !data.loudBox.url!.hasPrefix("http://") {
+                                    Link(destination: URL.init(string: "https://" + data.loudBox.url!)!) {
+                                        Text("https://" + data.loudBox.url!)
+                                    }
+                                } else {
+                                    Link(destination: URL.init(string: data.loudBox.url!)!) {
+                                        Text(data.loudBox.url!)
+                                    }
                                 }
-                            } else {
-                                Link(destination: URL.init(string: box.url!)!) {
-                                    Text(box.url!)
+                            }
+                            if data.loudBox.canHelp! {
+                                Link(destination: URL.init(string: data.loudBox.mail!)!) {
+                                    Text(data.loudBox.mail!)
                                 }
                             }
                         }
-                        if box.canHelp! {
-                            Link(destination: URL.init(string: box.mail!)!) {
-                                Text(box.mail!)
-                            }
+                    }
+                }
+                
+                if !isRoot {
+                    Section(header: Text("status")) {
+                        if data.loudBox.isRead {
+                            Text("already received!")
+                                .foregroundColor(.green)
+                        } else {
+                            Text("Processing...")
+                                .foregroundColor(.red)
                         }
                     }
                 }
-            }
-            
-            if !isRoot {
-                Section(header: Text("status")) {
-                    if box.isRead {
-                        Text("already received!")
-                            .foregroundColor(.green)
-                    } else {
-                        Text("Processing...")
-                            .foregroundColor(.red)
-                    }
-                }
-            }
-            
-            if box.replyBox.count != 0 {
-                ForEach(0..<box.replyBox.count) { count in
-                    Section(header: Text("Message\(count)")) {
-                        
+                
+                if data.loudBox.replyBox.count != 0 {
+                    ForEach(0..<data.loudBox.replyBox.count) { count in
+                        Section(header: Text("Message\(count)")) {
+                            
+                        }
                     }
                 }
             }
         }
         .onAppear(perform: {
+            data.setBox(box: self.box)
+            self.canShow = true
             if self.isRoot && !self.box.isRead {
                 data.readMessageBox(box: box, name: name)
+            } else if !self.isRoot {
+                data.canLoud = true
+                data.updateMessageBox(name: name, box: self.box)
             }
+        })
+        .onDisappear(perform: {
+            data.canLoud = false
         })
         .navigationBarTitle(Text(box.title), displayMode: .inline)
     }
