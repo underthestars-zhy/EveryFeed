@@ -59,6 +59,8 @@ struct ContentView: View {
                         switch go {
                         case "EveryCheck":
                             self.goTo = 1
+                        case "EveryFeed":
+                            self.goTo = 2
                         default:
                             self.goTo = nil
                         }
