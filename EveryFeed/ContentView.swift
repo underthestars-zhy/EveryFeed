@@ -7,30 +7,68 @@
 
 import SwiftUI
 
+extension URL {
+    public var parametersFromQueryString : [String: String]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
+        let queryItems = components.queryItems else { return nil }
+        return queryItems.reduce(into: [String: String]()) { (result, item) in
+            result[item.name] = item.value
+        }
+    }
+}
+
 struct ContentView: View {
     
     @StateObject var data = DataManager()
+    @State var tabSelection:Int = 1
+    @State var goTo:Int?
     
     var body: some View {
-        TabView {
+        TabView(selection:$tabSelection) {
             MeesageView()
                 .environmentObject(data)
                 .tabItem {
                     Image(systemName: "message.fill")
                     Text("Message")
                 }
-            FeedBackView()
+                .tag(1)
+            FeedBackView(goTo: $goTo)
                 .environmentObject(data)
                 .tabItem {
                     Image(systemName: "ladybug.fill")
                     Text("FeedBack")
                 }
+                .tag(2)
             SettingView()
                 .environmentObject(data)
                 .tabItem{
                     Image(systemName: "gearshape.fill")
                     Text("Seeting")
                 }
+                .tag(3)
+        }
+        .onOpenURL { url in
+            let selection = url.host
+            switch selection{
+            case "message":
+                tabSelection = 1
+            case "feedback":
+                tabSelection = 2
+                if let dic = url.parametersFromQueryString {
+                    if let go = dic["appName"] {
+                        switch go {
+                        case "EveryCheck":
+                            self.goTo = 1
+                        default:
+                            self.goTo = nil
+                        }
+                    }
+                }
+            case "settings":
+                tabSelection = 3
+            default:
+                tabSelection = 1
+            }
         }
         .onAppear(perform: {
 
@@ -95,14 +133,15 @@ struct MeesageView: View {
 
 struct FeedBackView: View {
     @EnvironmentObject var data:DataManager
+    @Binding var goTo:Int?
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Zhu Haoyu")) {
-                    NavigationLink(destination: FeedBack(appName: "EveryCheck").environmentObject(self.data)) {
+                    NavigationLink(destination: FeedBack(appName: "EveryCheck").environmentObject(self.data), tag: 1, selection: self.$goTo) {
                         Text("EveryCheck")
                     }
-                    NavigationLink(destination: FeedBack(appName: "EveryFeed").environmentObject(self.data)) {
+                    NavigationLink(destination: FeedBack(appName: "EveryFeed").environmentObject(self.data), tag: 2, selection: self.$goTo) {
                         Text("EveryFeed")
                     }
                 }

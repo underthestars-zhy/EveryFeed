@@ -17,6 +17,7 @@ class DataManager:ObservableObject {
     let getUser = [
         "384d30672948": ("EveryCheck", 2),
         "83de161a427u": ("EveryFeed", 2),
+        "uy76dhu7ssji": ("EveryCheck", 1),
     ]
     
     
