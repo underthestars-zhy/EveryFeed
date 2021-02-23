@@ -123,13 +123,13 @@ struct messageBoxForm: View {
                             Text(data.loudBox.replyBox[count])
                                 .foregroundColor({
                                     if self.isRoot {
-                                        if count % 2 == 0 {
+                                        if data.loudBox.replyUser[count] == 0 {
                                             return .blue
                                         } else {
                                             return Color.init(UIColor.label.cgColor)
                                         }
                                     } else {
-                                        if count % 2 != 0 {
+                                        if data.loudBox.replyUser[count] == 1 {
                                             return .blue
                                         } else {
                                             return Color.init(UIColor.label.cgColor)
